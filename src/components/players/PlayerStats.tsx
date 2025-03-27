@@ -82,7 +82,7 @@ const PlayerStats = () => {
                 id="metric"
                 value={comparisonMetric}
                 onChange={handleMetricChange}
-                className="bg-white/5 text-sm border border-white/10 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-fcb-blue"
+                className="bg-black/80 text-sm text-gray-300 border border-white/10 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-fcb-blue hover:bg-black transition-colors cursor-pointer"
               >
                 <option value="Gls">Goals</option>
                 <option value="Ast">Assists</option>

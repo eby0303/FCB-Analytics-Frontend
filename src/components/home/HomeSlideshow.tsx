@@ -1,25 +1,24 @@
-
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
   {
-    title: "FC Barcelona",
-    subtitle: "More Than A Club",
-    image: "https://i.imgur.com/3YNRsR5.jpeg",
-    gradient: "from-fcb-blue/80 to-fcb-red/80"
+    // title: "FC Barcelona",
+    // subtitle: "More Than A Club",
+    image: "https://res.cloudinary.com/dijx4ril7/image/upload/v1743103386/Camp-Nou_n1pxmj.jpg",
+    // gradient: "from-fcb-blue/80 to-fcb-red/80"
   },
   {
-    title: "Championship Pursuit",
-    subtitle: "Chasing Glory in La Liga",
-    image: "https://i.imgur.com/xFLBGZS.jpeg",
-    gradient: "from-fcb-red/80 to-fcb-blue/80"
+    // title: "Championship Pursuit",
+    // subtitle: "Chasing Glory in La Liga",
+    image: "https://res.cloudinary.com/dijx4ril7/image/upload/v1743103387/fcb-just-do-it-3840x2160-14150_jtqgrj.jpg",
+    // gradient: "from-fcb-red/80 to-fcb-blue/80"
   },
   {
-    title: "European Dreams",
-    subtitle: "Champions League Campaign",
-    image: "https://i.imgur.com/NkxkRvQ.jpeg",
-    gradient: "from-blue-600/80 to-purple-600/80"
+    // title: "European Dreams",
+    // subtitle: "Champions League Campaign",
+    image: "https://res.cloudinary.com/dijx4ril7/image/upload/v1743104535/fpd30ezKyeZF_dxlplz.jpg",
+    // gradient: "from-blue-600/80 to-purple-600/80"
   }
 ];
 
@@ -46,21 +45,21 @@ const HomeSlideshow = () => {
   };
 
   return (
-    <div className="relative h-[400px] overflow-hidden rounded-xl mb-8 animate-fade-in">
+    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl mb-8 animate-fade-in">
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-all duration-700 ease-in-out
+          className={`absolute inset-0 transition-all duration-200 ease-in-out
             ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}`}
         >
           <div 
             className="absolute inset-0 bg-cover bg-center" 
             style={{ backgroundImage: `url(${slide.image})` }} 
           />
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`} />
+          {/* <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`} /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">{slide.title}</h2>
-            <p className="text-xl md:text-2xl">{slide.subtitle}</p>
+            {/* <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">{slide.title}</h2> */}
+            {/* <p className="text-xl md:text-2xl">{slide.subtitle}</p> */}
           </div>
         </div>
       ))}

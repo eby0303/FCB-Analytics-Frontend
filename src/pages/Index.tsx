@@ -9,8 +9,9 @@ const Index = () => {
   return (
     <div className="page-container page-transition">
       <HomeSlideshow />
+      <div className="mb-32"></div> 
       
-      <div className="mb-8 text-center">
+      <div className="mb-16 text-center">
         <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-gradient">
           FC Barcelona Analytics
         </h1>

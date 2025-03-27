@@ -1,4 +1,3 @@
-
 import { Award, Target, Zap } from 'lucide-react';
 import { useTeamStats } from '../../hooks/usePlayerData';
 import StatsCard from '../ui/StatsCard';
@@ -23,36 +22,42 @@ const TopPlayersStats = () => {
   if (error || !data) {
     return null;
   }
-  
-  // Get top goal scorer
-  const topScorer = [...data.stats_standard_combined]
-    .sort((a, b) => {
-      const aGoals = parseInt(a.Gls) * parseFloat(a["90s"]);
-      const bGoals = parseInt(b.Gls) * parseFloat(b["90s"]);
-      return bGoals - aGoals;
-    })[0];
-  
-  // Get top assist provider
-  const topAssister = [...data.stats_standard_combined]
-    .sort((a, b) => {
-      const aAssists = parseInt(a.Ast) * parseFloat(a["90s"]);
-      const bAssists = parseInt(b.Ast) * parseFloat(b["90s"]);
-      return bAssists - aAssists;
-    })[0];
-  
-  // Most progressive passes
-  const topProgressive = [...data.stats_standard_combined]
-    .sort((a, b) => {
-      return parseInt(b.PrgP) - parseInt(a.PrgP);
-    })[0];
-  
-  const calculateTotalGoals = (player: PlayerStats) => {
-    return Math.round(parseFloat(player["90s"]) * parseFloat(player.Gls));
+
+  // Helper function to safely parse and calculate stats
+  const getStatValue = (player: PlayerStats, stat: string) => {
+    const statValue = parseFloat(player[stat] || '0');
+    const minutesPlayed = parseFloat(player['90s'] || '0');
+    return statValue * minutesPlayed;
   };
+
+  // Get top performers with proper sorting
+  const playersWithStats = data.stats_standard_combined
+    .filter(player => player && player['90s']) // Filter out players without minutes played
+    .map(player => ({
+      ...player,
+      totalGoals: getStatValue(player, 'Gls'),
+      totalAssists: getStatValue(player, 'Ast'),
+      progressivePasses: parseInt(player.PrgP || '0'),
+    }));
+
+  // Sort by goals descending
+  const topScorer = [...playersWithStats].sort((a, b) => b.totalGoals - a.totalGoals)[0];
   
-  const calculateTotalAssists = (player: PlayerStats) => {
-    return Math.round(parseFloat(player["90s"]) * parseFloat(player.Ast));
-  };
+  // Sort by assists descending
+  const topAssister = [...playersWithStats].sort((a, b) => b.totalAssists - a.totalAssists)[0];
+  
+  // Sort by progressive passes descending
+  const topProgressive = [...playersWithStats].sort((a, b) => b.progressivePasses - a.progressivePasses)[0];
+
+  // Debugging logs (remove in production)
+  console.log('Top Scorer:', topScorer);
+  console.log('Top Assister:', topAssister);
+  console.log('All Players:', playersWithStats.map(p => ({
+    player: p.Player,
+    goals: p.totalGoals,
+    assists: p.totalAssists,
+    prgPasses: p.progressivePasses
+  })));
 
   return (
     <div className="mb-8">
@@ -60,19 +65,19 @@ const TopPlayersStats = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatsCard
           title={`Top Scorer: ${topScorer.Player}`}
-          value={`${calculateTotalGoals(topScorer)} Goals`}
+          value={`${Math.round(topScorer.totalGoals)} Goals`}
           icon={<Award className="w-6 h-6" />}
           className="border-l-4 border-fcb-red"
         />
         <StatsCard
           title={`Top Assister: ${topAssister.Player}`}
-          value={`${calculateTotalAssists(topAssister)} Assists`}
+          value={`${Math.round(topAssister.totalAssists)} Assists`}
           icon={<Target className="w-6 h-6" />}
           className="border-l-4 border-fcb-blue"
         />
         <StatsCard
           title={`Playmaker: ${topProgressive.Player}`}
-          value={`${topProgressive.PrgP} Prog. Passes`}
+          value={`${topProgressive.progressivePasses} Prog. Passes`}
           icon={<Zap className="w-6 h-6" />}
           className="border-l-4 border-yellow-500"
         />

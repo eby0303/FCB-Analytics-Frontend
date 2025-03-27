@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { PlayerStats } from '../../utils/api';
@@ -8,18 +7,17 @@ interface ComparisonChartProps {
   metric: string;
 }
 
-// Top 5 players by a given metric
 const ComparisonChart = ({ data, metric }: ComparisonChartProps) => {
   const [chartData, setChartData] = useState<any[]>([]);
   
   useEffect(() => {
     if (!data || data.length === 0) return;
     
-    // Sort and get top 5 players by the selected metric
+    // Sort and get top 5 players by the selected metric (multiplied by 90s)
     const sortedData = [...data]
       .sort((a, b) => {
-        const aValue = parseFloat(a[metric as keyof PlayerStats] as string);
-        const bValue = parseFloat(b[metric as keyof PlayerStats] as string);
+        const aValue = getMetricValue(a, metric);
+        const bValue = getMetricValue(b, metric);
         return bValue - aValue;
       })
       .slice(0, 5);
@@ -27,11 +25,28 @@ const ComparisonChart = ({ data, metric }: ComparisonChartProps) => {
     // Format data for the chart
     const formattedData = sortedData.map(player => ({
       name: player.Player,
-      value: parseFloat(player[metric as keyof PlayerStats] as string),
+      value: getMetricValue(player, metric),
+      // Add original per90 value for tooltip
+      per90: parseFloat(player[metric as keyof PlayerStats] as string) || 0
     }));
     
     setChartData(formattedData);
   }, [data, metric]);
+
+  // Helper function to get properly formatted metric value
+  const getMetricValue = (player: PlayerStats, metric: string): number => {
+    const rawValue = parseFloat(player[metric as keyof PlayerStats] as string) * parseFloat(player['90s'] as string || '0');
+    
+    // Round only specific metrics
+    switch (metric) {
+      case 'Gls': // Goals
+      case 'Ast': // Assists
+      case 'G+A': // Goals + Assists
+        return Math.round(rawValue);
+      default:
+        return rawValue; // Keep as float for xG, xAG, etc.
+    }
+  };
   
   // Get metric display name
   const getMetricName = () => {
@@ -42,6 +57,18 @@ const ComparisonChart = ({ data, metric }: ComparisonChartProps) => {
       case 'xAG': return 'Expected Assists';
       case 'G+A': return 'Goals + Assists';
       default: return metric;
+    }
+  };
+
+  // Format tooltip value based on metric type
+  const formatTooltipValue = (value: number, metric: string) => {
+    switch (metric) {
+      case 'Gls':
+      case 'Ast':
+      case 'G+A':
+        return Math.round(value);
+      default:
+        return value.toFixed(2);
     }
   };
   
@@ -79,6 +106,12 @@ const ComparisonChart = ({ data, metric }: ComparisonChartProps) => {
               borderRadius: '8px',
               color: '#fff'
             }}
+            formatter={(value, name, props) => [
+              // Format based on metric type
+              [`Total ${name}:`, formatTooltipValue(value as number, metric)],
+              [`Per 90:`, props.payload.per90.toFixed(2)]
+            ]}
+            labelFormatter={(label) => `Player: ${label}`}
           />
           <Legend />
           <Bar
