@@ -32,11 +32,43 @@ const PlayerTable = ({ data, filterPosition }: PlayerTableProps) => {
     });
   }, [data, filterPosition]);
   
+  // Process data to convert per 90 stats to total stats
+  const processedData = useMemo(() => {
+    return filteredData.map(player => {
+      const minutes90s = parseFloat(player["90s"]);
+      
+      // Calculate total season goals and assists (not per 90)
+      const totalGoals = Math.round(parseFloat(player.Gls) * minutes90s);
+      const totalAssists = Math.round(parseFloat(player.Ast) * minutes90s);
+      
+      return {
+        ...player,
+        // Store original values for sorting
+        _originalGls: player.Gls,
+        _originalAst: player.Ast,
+        // Replace with calculated total values for display
+        Gls: totalGoals.toString(),
+        Ast: totalAssists.toString(),
+      };
+    });
+  }, [filteredData]);
+  
   // Sort the data
   const sortedData = useMemo(() => {
-    return [...filteredData].sort((a, b) => {
+    return [...processedData].sort((a, b) => {
       let aValue: string | number = a[sortField as keyof PlayerStats] as string;
       let bValue: string | number = b[sortField as keyof PlayerStats] as string;
+      
+      // Use original per-90 values for sorting goals and assists for more accurate comparison
+      if (sortField === 'Gls' && '_originalGls' in a) {
+        aValue = parseFloat(a._originalGls as string) * parseFloat(a["90s"] as string);
+        bValue = parseFloat(b._originalGls as string) * parseFloat(b["90s"] as string);
+      }
+      
+      if (sortField === 'Ast' && '_originalAst' in a) {
+        aValue = parseFloat(a._originalAst as string) * parseFloat(a["90s"] as string);
+        bValue = parseFloat(b._originalAst as string) * parseFloat(b["90s"] as string);
+      }
       
       // Convert to numbers if they are numeric
       if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
@@ -52,7 +84,7 @@ const PlayerTable = ({ data, filterPosition }: PlayerTableProps) => {
         return aValue < bValue ? 1 : -1;
       }
     });
-  }, [filteredData, sortField, sortDirection]);
+  }, [processedData, sortField, sortDirection]);
   
   const columns = [
     { id: 'Player', name: 'Player' },

@@ -4,6 +4,7 @@ import { useTeamStats } from '../../hooks/usePlayerData';
 import PlayerTable from './PlayerTable';
 import PlayerFilter from './PlayerFilter';
 import ComparisonChart from './ComparisonChart';
+import PlayerRadarChart from './PlayerRadarChart';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const PlayerStats = () => {
@@ -94,10 +95,16 @@ const PlayerStats = () => {
         </div>
         
         <TabsContent value="all" className="space-y-6 mt-0">
-          <ComparisonChart
-            data={data.stats_standard_combined}
-            metric={comparisonMetric}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ComparisonChart
+              data={data.stats_standard_combined}
+              metric={comparisonMetric}
+            />
+            <PlayerRadarChart 
+              data={data.stats_standard_combined}
+              filterPosition={filterPosition}
+            />
+          </div>
           <PlayerTable
             data={data.stats_standard_combined}
             filterPosition={filterPosition}
@@ -105,10 +112,16 @@ const PlayerStats = () => {
         </TabsContent>
         
         <TabsContent value="laliga" className="space-y-6 mt-0">
-          <ComparisonChart
-            data={data.stats_standard_12}
-            metric={comparisonMetric}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ComparisonChart
+              data={data.stats_standard_12}
+              metric={comparisonMetric}
+            />
+            <PlayerRadarChart 
+              data={data.stats_standard_12}
+              filterPosition={filterPosition}
+            />
+          </div>
           <PlayerTable
             data={data.stats_standard_12}
             filterPosition={filterPosition}
@@ -116,10 +129,16 @@ const PlayerStats = () => {
         </TabsContent>
         
         <TabsContent value="ucl" className="space-y-6 mt-0">
-          <ComparisonChart
-            data={data.stats_standard_8}
-            metric={comparisonMetric}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ComparisonChart
+              data={data.stats_standard_8}
+              metric={comparisonMetric}
+            />
+            <PlayerRadarChart 
+              data={data.stats_standard_8}
+              filterPosition={filterPosition}
+            />
+          </div>
           <PlayerTable
             data={data.stats_standard_8}
             filterPosition={filterPosition}

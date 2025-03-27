@@ -14,6 +14,11 @@ const MatchCard = ({ match, isUpcoming = false }: MatchCardProps) => {
   const formattedDate = format(new Date(match.utcDate), 'MMM d, yyyy');
   const formattedTime = format(new Date(match.utcDate), 'h:mm a');
   
+  // Get team crest URLs
+  const getTeamCrestUrl = (teamId: number) => {
+    return `https://crests.football-data.org/${teamId}.png`;
+  };
+  
   // Determine competition badge color
   const getCompetitionColor = () => {
     if (match.competition === "Primera Division") return "border-blue-500 bg-blue-500/10 text-blue-400";
@@ -37,12 +42,16 @@ const MatchCard = ({ match, isUpcoming = false }: MatchCardProps) => {
         <div className="flex items-center justify-between mb-4">
           {/* Home Team */}
           <div className={`flex flex-col items-center text-center transition-all duration-300 ${isFCBHome ? 'scale-110' : ''}`}>
-            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2">
-              {isFCBHome && teamInfo ? (
-                <img src={teamInfo.crest} alt="FCB" className="w-10 h-10 object-contain" />
-              ) : (
-                <div className="font-bold text-sm">{match.homeTeam.name.substring(0, 3).toUpperCase()}</div>
-              )}
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2 overflow-hidden">
+              <img 
+                src={getTeamCrestUrl(match.homeTeam.id)} 
+                alt={match.homeTeam.name}
+                className="w-10 h-10 object-contain"
+                onError={(e) => {
+                  // Fallback if crest doesn't load
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=' + match.homeTeam.name.substring(0, 3);
+                }}
+              />
             </div>
             <span className={`text-sm font-medium ${isFCBHome ? 'text-white' : 'text-gray-400'}`}>
               {match.homeTeam.name}
@@ -65,12 +74,16 @@ const MatchCard = ({ match, isUpcoming = false }: MatchCardProps) => {
           
           {/* Away Team */}
           <div className={`flex flex-col items-center text-center transition-all duration-300 ${!isFCBHome ? 'scale-110' : ''}`}>
-            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2">
-              {!isFCBHome && teamInfo ? (
-                <img src={teamInfo.crest} alt="FCB" className="w-10 h-10 object-contain" />
-              ) : (
-                <div className="font-bold text-sm">{match.awayTeam.name.substring(0, 3).toUpperCase()}</div>
-              )}
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2 overflow-hidden">
+              <img 
+                src={getTeamCrestUrl(match.awayTeam.id)} 
+                alt={match.awayTeam.name}
+                className="w-10 h-10 object-contain"
+                onError={(e) => {
+                  // Fallback if crest doesn't load
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=' + match.awayTeam.name.substring(0, 3);
+                }}
+              />
             </div>
             <span className={`text-sm font-medium ${!isFCBHome ? 'text-white' : 'text-gray-400'}`}>
               {match.awayTeam.name}

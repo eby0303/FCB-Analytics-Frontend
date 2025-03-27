@@ -2,10 +2,14 @@
 import RecentMatches from '../components/home/RecentMatches';
 import SeasonSummary from '../components/home/SeasonSummary';
 import UpcomingFixtures from '../components/home/UpcomingFixtures';
+import HomeSlideshow from '../components/home/HomeSlideshow';
+import TopPlayersStats from '../components/home/TopPlayersStats';
 
 const Index = () => {
   return (
     <div className="page-container page-transition">
+      <HomeSlideshow />
+      
       <div className="mb-8 text-center">
         <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-gradient">
           FC Barcelona Analytics
@@ -14,6 +18,8 @@ const Index = () => {
           Track performance, analyze statistics, and follow Barcelona's journey throughout the season.
         </p>
       </div>
+      
+      <TopPlayersStats />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
