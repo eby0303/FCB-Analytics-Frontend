@@ -9,10 +9,13 @@ const TopPlayersStats = () => {
   
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-32 bg-white/5 animate-pulse rounded-xl"></div>
-        ))}
+      <div className="mb-8">
+        <h2 className="section-title mb-4">Top Performers</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="h-32 bg-white/5 animate-pulse rounded-xl"></div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -24,16 +27,16 @@ const TopPlayersStats = () => {
   // Get top goal scorer
   const topScorer = [...data.stats_standard_combined]
     .sort((a, b) => {
-      const aGoals = parseFloat(a["90s"]) * parseFloat(a.Gls);
-      const bGoals = parseFloat(b["90s"]) * parseFloat(b.Gls);
+      const aGoals = parseInt(a.Gls) * parseFloat(a["90s"]);
+      const bGoals = parseInt(b.Gls) * parseFloat(b["90s"]);
       return bGoals - aGoals;
     })[0];
   
   // Get top assist provider
   const topAssister = [...data.stats_standard_combined]
     .sort((a, b) => {
-      const aAssists = parseFloat(a["90s"]) * parseFloat(a.Ast);
-      const bAssists = parseFloat(b["90s"]) * parseFloat(b.Ast);
+      const aAssists = parseInt(a.Ast) * parseFloat(a["90s"]);
+      const bAssists = parseInt(b.Ast) * parseFloat(b["90s"]);
       return bAssists - aAssists;
     })[0];
   
