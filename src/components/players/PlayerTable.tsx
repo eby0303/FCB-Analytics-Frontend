@@ -35,8 +35,8 @@ const PlayerTable = ({ data, filterPosition }: PlayerTableProps) => {
   // Sort the data
   const sortedData = useMemo(() => {
     return [...filteredData].sort((a, b) => {
-      let aValue = a[sortField as keyof PlayerStats];
-      let bValue = b[sortField as keyof PlayerStats];
+      let aValue: string | number = a[sortField as keyof PlayerStats] as string;
+      let bValue: string | number = b[sortField as keyof PlayerStats] as string;
       
       // Convert to numbers if they are numeric
       if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
