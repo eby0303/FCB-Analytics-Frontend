@@ -26,11 +26,12 @@ const TeamProfile = () => {
           </div>
           
           <div className="p-8 flex flex-col items-center -mt-16 relative">
-            <div className="w-32 h-32 rounded-full bg-white p-2 shadow-lg mb-4 transform hover:scale-105 transition-transform duration-300">
+            <div className="w-32 h-32 rounded-full bg-white p-2 shadow-lg mb-4 flex items-center justify-center">
+              {/* Fix for the crest image */}
               <img
-                src={data.crest}
+                src="https://crests.football-data.org/81.svg"
                 alt={data.name}
-                className="w-full h-full object-contain animate-pulse-subtle"
+                className="w-24 h-24 object-contain"
               />
             </div>
             

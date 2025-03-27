@@ -1,6 +1,12 @@
 
 import { useState } from 'react';
 import { Filter } from 'lucide-react';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 interface PlayerFilterProps {
   activePosition: string;
@@ -8,8 +14,6 @@ interface PlayerFilterProps {
 }
 
 const PlayerFilter = ({ activePosition, onFilterChange }: PlayerFilterProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  
   const positions = [
     { id: 'all', name: 'All Positions' },
     { id: 'DF', name: 'Defenders' },
@@ -18,44 +22,29 @@ const PlayerFilter = ({ activePosition, onFilterChange }: PlayerFilterProps) => 
     { id: 'GK', name: 'Goalkeepers' }
   ];
   
-  const handlePositionClick = (position: string) => {
-    onFilterChange(position);
-    setIsOpen(false);
-  };
-
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors duration-300"
-      >
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center space-x-2 px-4 py-2 bg-fcb-dark/80 hover:bg-fcb-dark/90 rounded-lg transition-colors border border-white/10">
         <Filter className="w-4 h-4" />
         <span className="text-sm font-medium">
           {positions.find(p => p.id === activePosition)?.name || 'Filter'}
         </span>
-      </button>
+      </DropdownMenuTrigger>
       
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 z-10 w-48 bg-fcb-dark neo-blur rounded-lg shadow-lg overflow-hidden">
-          <ul className="py-1">
-            {positions.map((position) => (
-              <li key={position.id}>
-                <button
-                  onClick={() => handlePositionClick(position.id)}
-                  className={`w-full text-left px-4 py-2 text-sm transition-colors duration-300 ${
-                    activePosition === position.id
-                      ? 'bg-fcb-blue/20 text-white'
-                      : 'hover:bg-white/5 text-gray-300'
-                  }`}
-                >
-                  {position.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+      <DropdownMenuContent className="bg-fcb-dark/95 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl">
+        {positions.map((position) => (
+          <DropdownMenuItem
+            key={position.id}
+            onClick={() => onFilterChange(position.id)}
+            className={`text-sm py-2 focus:bg-white/5 cursor-pointer ${
+              activePosition === position.id ? 'bg-fcb-blue/20 text-white' : 'text-gray-300 hover:bg-white/5'
+            }`}
+          >
+            {position.name}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
