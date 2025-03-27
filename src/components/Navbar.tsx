@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -82,10 +81,10 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile menu */}
+
       <div
-        className={`md:hidden ${
-          isOpen ? 'fixed inset-0 z-40 bg-fcb-dark/95 backdrop-blur-lg animate-fade-in' : 'hidden'
+        className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
+          isOpen ? 'opacity-100 visible bg-fcb-dark' : 'opacity-0 invisible'
         }`}
       >
         <div className="pt-20 pb-4 px-4 space-y-1">
