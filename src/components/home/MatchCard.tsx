@@ -42,18 +42,18 @@ const MatchCard = ({ match, isUpcoming = false }: MatchCardProps) => {
         <div className="flex items-center justify-between mb-4">
           {/* Home Team */}
           <div className={`flex flex-col items-center text-center transition-all duration-300 ${isFCBHome ? 'scale-110' : ''}`}>
-            <div className="w-16 h-16 flex items-center justify-center mb-2 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2 overflow-hidden">
               <img 
                 src={getTeamCrestUrl(match.homeTeam.id)} 
                 alt={match.homeTeam.name}
-                className="max-w-full max-h-full object-contain"
+                className="w-10 h-10 object-contain"
                 onError={(e) => {
                   // Fallback if crest doesn't load
                   (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=' + match.homeTeam.name.substring(0, 3);
                 }}
               />
             </div>
-            <span className={`text-sm font-medium max-w-[100px] ${isFCBHome ? 'text-white' : 'text-gray-400'}`}>
+            <span className={`text-sm font-medium ${isFCBHome ? 'text-white' : 'text-gray-400'}`}>
               {match.homeTeam.name}
             </span>
           </div>
@@ -74,18 +74,18 @@ const MatchCard = ({ match, isUpcoming = false }: MatchCardProps) => {
           
           {/* Away Team */}
           <div className={`flex flex-col items-center text-center transition-all duration-300 ${!isFCBHome ? 'scale-110' : ''}`}>
-            <div className="w-16 h-16 flex items-center justify-center mb-2 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-2 overflow-hidden">
               <img 
                 src={getTeamCrestUrl(match.awayTeam.id)} 
                 alt={match.awayTeam.name}
-                className="max-w-full max-h-full object-contain"
+                className="w-10 h-10 object-contain"
                 onError={(e) => {
                   // Fallback if crest doesn't load
                   (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=' + match.awayTeam.name.substring(0, 3);
                 }}
               />
             </div>
-            <span className={`text-sm font-medium max-w-[100px] ${!isFCBHome ? 'text-white' : 'text-gray-400'}`}>
+            <span className={`text-sm font-medium ${!isFCBHome ? 'text-white' : 'text-gray-400'}`}>
               {match.awayTeam.name}
             </span>
           </div>

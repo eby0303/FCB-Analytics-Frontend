@@ -24,18 +24,16 @@ const TopPlayersStats = () => {
   // Get top goal scorer
   const topScorer = [...data.stats_standard_combined]
     .sort((a, b) => {
-      // Calculate total goals (not per 90)
-      const aGoals = Math.round(parseFloat(a["90s"]) * parseFloat(a.Gls));
-      const bGoals = Math.round(parseFloat(b["90s"]) * parseFloat(b.Gls));
+      const aGoals = parseFloat(a["90s"]) * parseFloat(a.Gls);
+      const bGoals = parseFloat(b["90s"]) * parseFloat(b.Gls);
       return bGoals - aGoals;
     })[0];
   
   // Get top assist provider
   const topAssister = [...data.stats_standard_combined]
     .sort((a, b) => {
-      // Calculate total assists (not per 90)
-      const aAssists = Math.round(parseFloat(a["90s"]) * parseFloat(a.Ast));
-      const bAssists = Math.round(parseFloat(b["90s"]) * parseFloat(b.Ast));
+      const aAssists = parseFloat(a["90s"]) * parseFloat(a.Ast);
+      const bAssists = parseFloat(b["90s"]) * parseFloat(b.Ast);
       return bAssists - aAssists;
     })[0];
   
@@ -54,26 +52,23 @@ const TopPlayersStats = () => {
   };
 
   return (
-    <div className="glass-card rounded-xl overflow-hidden">
-      <div className="border-b border-white/10 px-6 py-4">
-        <h2 className="text-xl font-display font-medium text-gradient">Top Performers</h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+    <div className="mb-8">
+      <h2 className="section-title mb-4">Top Performers</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatsCard
-          title={`Top Scorer: ${topScorer.Player.split(' ').pop()}`}
+          title={`Top Scorer: ${topScorer.Player}`}
           value={`${calculateTotalGoals(topScorer)} Goals`}
           icon={<Award className="w-6 h-6" />}
           className="border-l-4 border-fcb-red"
         />
         <StatsCard
-          title={`Top Assister: ${topAssister.Player.split(' ').pop()}`}
+          title={`Top Assister: ${topAssister.Player}`}
           value={`${calculateTotalAssists(topAssister)} Assists`}
           icon={<Target className="w-6 h-6" />}
           className="border-l-4 border-fcb-blue"
         />
         <StatsCard
-          title={`Playmaker: ${topProgressive.Player.split(' ').pop()}`}
+          title={`Playmaker: ${topProgressive.Player}`}
           value={`${topProgressive.PrgP} Prog. Passes`}
           icon={<Zap className="w-6 h-6" />}
           className="border-l-4 border-yellow-500"
