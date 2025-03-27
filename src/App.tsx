@@ -1,33 +1,32 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Index from "./pages/Index";
-import Players from "./pages/Players";
-import About from "./pages/About";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ParallaxProvider } from 'react-scroll-parallax';
+import Navbar from './components/Navbar';
+import Index from './pages/Index';
+import Players from './pages/Players';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
+import './App.css';
 
+// Create React Query client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen flex flex-col bg-fcb-dark">
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ParallaxProvider>
+        <BrowserRouter>
           <Navbar />
-          <main className="flex-1">
+          <main>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/players" element={<Players />} />
@@ -35,10 +34,10 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        </BrowserRouter>
+      </ParallaxProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

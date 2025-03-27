@@ -4,6 +4,7 @@ import SeasonSummary from '../components/home/SeasonSummary';
 import UpcomingFixtures from '../components/home/UpcomingFixtures';
 import HomeSlideshow from '../components/home/HomeSlideshow';
 import TopPlayersStats from '../components/home/TopPlayersStats';
+import ClubAchievements from '../components/home/ClubAchievements';
 
 const Index = () => {
   return (
@@ -19,13 +20,20 @@ const Index = () => {
         </p>
       </div>
       
-      <TopPlayersStats />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+        <div className="lg:col-span-8">
+          <TopPlayersStats />
+        </div>
+        <div className="lg:col-span-4">
+          <ClubAchievements />
+        </div>
+      </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8">
           <RecentMatches />
         </div>
-        <div className="space-y-8">
+        <div className="lg:col-span-4 space-y-8">
           <SeasonSummary />
           <UpcomingFixtures />
         </div>
