@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { 
   Radar, 
@@ -129,7 +128,7 @@ const PlayerRadarChart = ({
     const newPlayerPercentiles = selectedPlayers.map(player => {
       const playerData: PlayerPercentileData = {
         player: player.Player,
-        team: player.Squad,
+        team: player.team || "Barcelona",
         age: player.Age,
         metrics: {}
       };
