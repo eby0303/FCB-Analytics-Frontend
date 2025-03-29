@@ -101,6 +101,7 @@ const Gallery6 = ({
                 dragFree: true,
               },
             },
+            align: "start" // This ensures the first slide starts from the left
           }}
           className="relative left-[-1rem]"
         >

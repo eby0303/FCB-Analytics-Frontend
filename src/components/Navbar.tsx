@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -36,9 +37,10 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <NavLink to="/" className="flex items-center">
-              <h1 className="text-xl font-display font-bold tracking-tight">
+              <h1 className="text-xl font-display font-bold tracking-tight flex items-center">
                 <span className="text-[#004D98]">FC</span>
                 <span className="text-[#A50044]">B</span>
+                <span className="text-[#FFED02] ml-0.5">•</span>
                 <span className="text-white ml-1">Analytics</span>
               </h1>
             </NavLink>
@@ -53,7 +55,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `relative px-1 py-2 text-sm font-medium transition-colors duration-300 hover:text-white ${
                     isActive 
-                      ? 'text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-fcb-blue after:to-fcb-red' 
+                      ? 'text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-fcb-blue after:via-fcb-red after:to-[#FFED02]' 
                       : 'text-gray-300'
                   }`
                 }
@@ -81,26 +83,28 @@ const Navbar = () => {
         </div>
       </div>
       
-
+      {/* Mobile menu, show/hide based on menu state */}
       <div
         className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
-          isOpen ? 'opacity-100 visible bg-fcb-dark' : 'opacity-0 invisible'
+          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
-        <div className="pt-20 pb-4 px-4 space-y-1">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) => 
-                `block py-4 text-center text-lg font-medium border-b border-white/10 ${
-                  isActive ? 'text-white' : 'text-gray-300'
-                }`
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
+        <div className="fixed inset-0 bg-fcb-dark/95 backdrop-blur-md">
+          <div className="pt-20 pb-4 px-4 space-y-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) => 
+                  `block py-4 text-center text-lg font-medium border-b border-white/10 ${
+                    isActive ? 'text-[#FFED02]' : 'text-gray-300'
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </div>
         </div>
       </div>
     </header>

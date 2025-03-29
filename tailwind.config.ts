@@ -33,6 +33,10 @@ export default {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
+				tertiary: {
+					DEFAULT: 'hsl(var(--tertiary))',
+					foreground: 'hsl(var(--tertiary-foreground))'
+				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
@@ -67,6 +71,7 @@ export default {
 				fcb: {
 					blue: '#004D98',
 					red: '#A50044',
+					yellow: '#FFED02',
 					dark: '#121212',
 					light: '#F5F5F7',
 				}
@@ -142,6 +147,7 @@ export default {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'fcb-gradient': 'linear-gradient(to right, #004D98, #A50044)',
+				'fcb-full-gradient': 'linear-gradient(to right, #004D98, #A50044, #FFED02)',
 				'card-gradient': 'linear-gradient(to bottom right, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
 			}
 		}

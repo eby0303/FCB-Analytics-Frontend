@@ -22,6 +22,9 @@
     --secondary: 340 70% 28.4%; /* FCB Red */
     --secondary-foreground: 0 0% 98%;
     
+    --tertiary: 52 100% 50%; /* FCB Yellow */
+    --tertiary-foreground: 240 10% 3.9%;
+    
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
     
@@ -90,6 +93,14 @@
   
   .section-title {
     @apply text-2xl md:text-3xl font-display font-bold mb-6 text-gradient;
+  }
+  
+  .fcb-highlight {
+    @apply text-[#FFED02];
+  }
+  
+  .fcb-gradient-accent {
+    @apply bg-gradient-to-r from-fcb-blue via-fcb-red to-[#FFED02];
   }
 }
 
