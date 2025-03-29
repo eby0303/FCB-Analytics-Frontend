@@ -45,14 +45,13 @@ const PlayerRadarChart = ({
   // Metrics to show on the radar chart and table
   const metrics = [
     { key: 'Age', name: 'Age', displayInTable: true, displayInRadar: false },
-    { key: 'Duels', name: 'Duel%', displayInTable: true, displayInRadar: true },
-    { key: 'DefAct', name: 'Def actions', displayInTable: true, displayInRadar: true },
-    { key: 'PrgC', name: 'Prog. carries', displayInTable: true, displayInRadar: true },
-    { key: 'FwdP', name: 'Forward passes', displayInTable: true, displayInRadar: true },
-    { key: 'PassPct', name: 'Forward pass%', displayInTable: true, displayInRadar: true },
-    { key: 'KP', name: 'Key passes', displayInTable: true, displayInRadar: true },
-    { key: 'PrgP', name: 'Prog. passes', displayInTable: true, displayInRadar: true },
-    { key: 'Min', name: 'Minutes played', displayInTable: true, displayInRadar: false }
+    { key: 'Gls', name: 'Goals', displayInTable: true, displayInRadar: true },
+    { key: 'Ast', name: 'Assists', displayInTable: true, displayInRadar: true },
+    { key: 'PrgC', name: 'Prog Carries', displayInTable: true, displayInRadar: true },
+    { key: 'PrgP', name: 'Prog Passes', displayInTable: true, displayInRadar: true },
+    { key: 'xG', name: 'xG', displayInTable: true, displayInRadar: true },
+    { key: 'xAG', name: 'xAG', displayInTable: true, displayInRadar: true },
+    { key: 'Min', name: 'Minutes', displayInTable: true, displayInRadar: false },
   ];
   
   const radarMetrics = metrics.filter(m => m.displayInRadar);
@@ -128,8 +127,8 @@ const PlayerRadarChart = ({
     const newPlayerPercentiles = selectedPlayers.map(player => {
       const playerData: PlayerPercentileData = {
         player: player.Player,
-        team: player.team || "Barcelona",
         age: player.Age,
+        team: "Barcelona",
         metrics: {}
       };
       
@@ -175,7 +174,7 @@ const PlayerRadarChart = ({
   
   // Handle adding a player to selection
   const addPlayer = (player: PlayerStats) => {
-    if (selectedPlayers.length < 3 && !selectedPlayers.some(p => p.Player === player.Player)) {
+    if (selectedPlayers.length < 5 && !selectedPlayers.some(p => p.Player === player.Player)) {
       setSelectedPlayers([...selectedPlayers, player]);
     }
     setSearchTerm("");
@@ -193,7 +192,7 @@ const PlayerRadarChart = ({
   );
 
   // Colors for different players
-  const colors = ['#A50044', '#004D98', '#FFED02'];
+  const colors = ['#A50044', '#004D98', '#FFED02', '#00A3E0', '#FF6B00'];
 
   return (
     <div className="glass-card p-4 rounded-xl">
