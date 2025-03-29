@@ -26,9 +26,9 @@ const NEWS_API_URL = "http://localhost:5000/api/news";
 
 // Default fallback images
 const DEFAULT_IMAGES = [
-  "https://images.unsplash.com/photo-1550513027-e20dca68e664?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1555685812-4b8f59597d26?q=80&w=1470&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1554728696-88a82997e7b1?q=80&w=1470&auto=format&fit=crop"
+  "https://res.cloudinary.com/dijx4ril7/image/upload/v1743248033/fc-barcelona-desktop-mgikaponxousbi8b_dgq7rk.jpg",
+  "https://res.cloudinary.com/dijx4ril7/image/upload/v1743248032/b47f9250-9044-11ef-b662-41b5b09eed2d_nffllh.jpg",
+  "https://res.cloudinary.com/dijx4ril7/image/upload/v1743248032/HD-wallpaper-fc-barcelona-futbol-club-barcelona-barca-logo-football-emblem-crest_r169sv.jpg"
 ];
 
 // Function to check if image URL is valid or a placeholder
