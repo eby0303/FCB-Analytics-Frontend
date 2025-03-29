@@ -35,56 +35,57 @@ const PlayerTable = ({ data, filterPosition }: PlayerTableProps) => {
   // Process data to convert per 90 stats to total stats
   const processedData = useMemo(() => {
     return filteredData.map(player => {
-      const minutes90s = parseFloat(player["90s"]);
-      
-      // Calculate total season goals and assists (not per 90)
-      const totalGoals = Math.round(parseFloat(player.Gls) * minutes90s);
-      const totalAssists = Math.round(parseFloat(player.Ast) * minutes90s);
-      
+      const minutes90s = parseFloat(player["90s"]) || 0;  // Ensure it's a valid number
+      const totalGoals = Math.round((parseFloat(player.Gls) || 0) * minutes90s);
+      const totalAssists = Math.round((parseFloat(player.Ast) || 0) * minutes90s);
+  
       return {
         ...player,
-        // Store original values for sorting
-        _originalGls: player.Gls,
-        _originalAst: player.Ast,
-        // Replace with calculated total values for display
+        _originalGls: player.Gls || 0,
+        _originalAst: player.Ast || 0,
         Gls: totalGoals.toString(),
         Ast: totalAssists.toString(),
+        Min: player.Min || 0,
+        MP: player.MP || 0,
+        xG: player.xG || 0,
+        xAG: player.xAG || 0,
+        PrgP: player.PrgP || 0,
       };
     });
   }, [filteredData]);
+  
   
   // Sort the data
   const sortedData = useMemo(() => {
     return [...processedData].sort((a, b) => {
       let aValue: string | number = a[sortField as keyof PlayerStats] as string;
       let bValue: string | number = b[sortField as keyof PlayerStats] as string;
-      
-      // Use original per-90 values for sorting goals and assists for more accurate comparison
-      if (sortField === 'Gls' && '_originalGls' in a) {
+  
+      // Ensure values are converted to numbers where needed
+      aValue = isNaN(Number(aValue)) ? aValue : Number(aValue);
+      bValue = isNaN(Number(bValue)) ? bValue : Number(bValue);
+  
+      // Use original per-90 values for sorting goals and assists
+      if (sortField === "Gls" && "_originalGls" in a) {
         aValue = parseFloat(a._originalGls as string) * parseFloat(a["90s"] as string);
         bValue = parseFloat(b._originalGls as string) * parseFloat(b["90s"] as string);
       }
-      
-      if (sortField === 'Ast' && '_originalAst' in a) {
+  
+      if (sortField === "Ast" && "_originalAst" in a) {
         aValue = parseFloat(a._originalAst as string) * parseFloat(a["90s"] as string);
         bValue = parseFloat(b._originalAst as string) * parseFloat(b["90s"] as string);
       }
-      
-      // Convert to numbers if they are numeric
-      if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
-        aValue = Number(aValue);
-        bValue = Number(bValue);
-      }
-      
+  
+      // Convert non-numeric values to 0
+      aValue = typeof aValue === "number" && !isNaN(aValue) ? aValue : 0;
+      bValue = typeof bValue === "number" && !isNaN(bValue) ? bValue : 0;
+  
       if (aValue === bValue) return 0;
-      
-      if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
+  
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
     });
   }, [processedData, sortField, sortDirection]);
+  
   
   const columns = [
     { id: 'Player', name: 'Player' },
