@@ -67,15 +67,15 @@ const ClubAchievements = () => {
         <h3 className="text-lg font-medium mb-2 text-center">Notable Achievement Periods</h3>
         <div className="space-y-3">
           <div className="bg-fcb-dark/60 p-3 rounded-lg">
-            <span className="font-semibold text-fcb-blue">Guardiola Era (2008-2012):</span> 
+            <span className="font-semibold text-fcb-yellow">Guardiola Era (2008-2012):</span> 
             <span className="text-gray-300 ml-2">14 trophies in 4 years, including 2 Champions League titles</span>
           </div>
           <div className="bg-fcb-dark/60 p-3 rounded-lg">
-            <span className="font-semibold text-fcb-blue">2014-2015 Season:</span> 
+            <span className="font-semibold text-fcb-yellow">2014-2015 Season:</span> 
             <span className="text-gray-300 ml-2">Historic treble under Luis Enrique with MSN trio</span>
           </div>
           <div className="bg-fcb-dark/60 p-3 rounded-lg">
-            <span className="font-semibold text-fcb-blue">2009 Season:</span> 
+            <span className="font-semibold text-fcb-yellow">2009 Season:</span> 
             <span className="text-gray-300 ml-2">First club to win six trophies in a calendar year</span>
           </div>
         </div>

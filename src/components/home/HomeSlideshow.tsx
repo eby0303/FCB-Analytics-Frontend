@@ -45,7 +45,7 @@ const HomeSlideshow = () => {
   };
 
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl mb-8 animate-fade-in">
+    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[560px] overflow-hidden rounded-xl mb-8 animate-fade-in">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -79,7 +79,7 @@ const HomeSlideshow = () => {
       </button>
       
       {/* Dots navigation */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+      {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -89,7 +89,7 @@ const HomeSlideshow = () => {
             onClick={() => goToSlide(index)}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

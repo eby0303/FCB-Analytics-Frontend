@@ -38,11 +38,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/3e522f32-b31d-4c20-a596-7ba889ab93a5/joan-gamper.jpg?width=640&height=400" 
                       alt="Joan Gamper"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -58,11 +58,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/b5ea84d5-8f86-40cd-ac63-c27c5ce20589/les-corts.jpg?width=640&height=400" 
                       alt="Les Corts Stadium"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -78,11 +78,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/1c8a3ff5-db5c-455e-a398-ec10a325f8c2/kubala.jpg?width=640&height=400" 
                       alt="László Kubala"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -98,11 +98,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/2e8346f7-fad2-4eb6-bcbd-90945d52ae26/camp-nou-1957.jpg?width=640&height=400" 
                       alt="Camp Nou 1957"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -118,11 +118,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/4e17eb0f-8bce-4c9b-8888-2f25fd36dd21/cruyff-player.jpg?width=640&height=400" 
                       alt="Johan Cruyff"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -138,11 +138,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/ba7b5c97-b5d7-4152-8b21-2ae68a5df80b/dream-team.jpg?width=640&height=400" 
                       alt="Dream Team 1992"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -158,11 +158,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/74a885af-a773-4caf-b087-10c1f01a1754/ronaldinho.jpg?width=640&height=400" 
                       alt="Ronaldinho"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -178,11 +178,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2020/03/05/caa98425-6a7d-4eb2-bf0a-512f3c00dd91/tiki-taka.jpg?width=640&height=400" 
                       alt="Tiki-Taka Era"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -198,11 +198,11 @@ const About = () => {
                 </p>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="overflow-hidden rounded-lg">
-                    <img 
+                    {/* <img 
                       src="https://www.fcbarcelona.com/photo-resources/2023/08/27/dd9c83ae-2fdf-4f5a-a9dc-0562ea392fcb/09-lamine_w_35821828.jpg?width=640&height=400" 
                       alt="New Generation"
                       className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

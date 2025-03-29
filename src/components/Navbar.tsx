@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -7,12 +6,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
 
-  // Close menu when window resizes to larger than mobile
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -34,7 +31,6 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 backdrop-blur-md bg-fcb-dark/90 dark:bg-fcb-dark/90 border-b border-white/10 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <div className="flex-shrink-0">
             <NavLink to="/" className="flex items-center">
               <h1 className="text-xl font-display font-bold tracking-tight flex items-center">
@@ -46,7 +42,6 @@ const Navbar = () => {
             </NavLink>
           </div>
           
-          {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <NavLink
@@ -65,7 +60,6 @@ const Navbar = () => {
             ))}
           </nav>
           
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -83,25 +77,22 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile menu, show/hide based on menu state */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-fcb-dark">
-          <div className="fixed inset-0 bg-black/95">
-            <div className="pt-20 pb-4 px-4 space-y-1">
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) => 
-                    `block py-4 text-center text-lg font-medium border-b border-white/10 ${
-                      isActive ? 'text-[#FFED02]' : 'text-gray-300'
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
-              ))}
-            </div>
+        <div className="md:hidden fixed inset-0 z-40 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-fcb-dark w-[90vw] max-w-md rounded-lg shadow-lg p-2 text-center mt-40">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) => 
+                  `block py-4 text-lg font-medium border-b border-white/10 ${
+                    isActive ? 'text-[#FFED02]' : 'text-gray-300'
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
           </div>
         </div>
       )}
