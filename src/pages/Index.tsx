@@ -4,6 +4,7 @@ import SeasonSummary from '../components/home/SeasonSummary';
 import UpcomingFixtures from '../components/home/UpcomingFixtures';
 import HomeSlideshow from '../components/home/HomeSlideshow';
 import TopPlayersStats from '../components/home/TopPlayersStats';
+import LatestNews from '../components/home/LatestNews';
 
 const Index = () => {
   return (
@@ -30,6 +31,10 @@ const Index = () => {
           <SeasonSummary />
           <UpcomingFixtures />
         </div>
+      </div>
+      
+      <div className="mt-16">
+        <LatestNews />
       </div>
     </div>
   );

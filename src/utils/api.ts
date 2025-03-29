@@ -1,4 +1,3 @@
-
 // API endpoints
 const BASE_URL = 'http://localhost:5000/api';
 
@@ -9,6 +8,7 @@ export const API_ENDPOINTS = {
   SEASON_STATS: `${BASE_URL}/stats/season`,
   TEAM_STATS: `${BASE_URL}/stats/team`,
   TEAM_INFO: `${BASE_URL}/team-info`,
+  NEWS: `${BASE_URL}/news`,
 };
 
 // Fetch wrapper with error handling
@@ -118,4 +118,24 @@ export interface TeamInfo {
   name: string;
   crest: string;
   venue: string;
+}
+
+export interface NewsArticle {
+  title: string;
+  url: string;
+  imageUrl: string;
+  date: string;
+  isToday: boolean;
+}
+
+export interface NewsResponse {
+  success: boolean;
+  data: {
+    dateFilter: {
+      yesterday: string;
+      today: string;
+      includeToday: boolean;
+    };
+    articles: NewsArticle[];
+  };
 }
