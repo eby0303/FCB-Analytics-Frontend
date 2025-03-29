@@ -2,10 +2,12 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useTheme } from '../hooks/useTheme';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { theme, setTheme } = useTheme();
   
   // Close mobile menu when route changes
   useEffect(() => {
@@ -24,6 +26,10 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Players', path: '/players' },
@@ -31,7 +37,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-fcb-dark/90 border-b border-white/10">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-fcb-dark/90 dark:bg-fcb-dark/90 border-b border-white/10 dark:border-white/10 light:bg-white/90 light:border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -41,7 +47,7 @@ const Navbar = () => {
                 <span className="text-[#004D98]">FC</span>
                 <span className="text-[#A50044]">B</span>
                 <span className="text-[#FFED02] ml-0.5">•</span>
-                <span className="text-white ml-1">Analytics</span>
+                <span className="text-white dark:text-white light:text-fcb-dark ml-1">Analytics</span>
               </h1>
             </NavLink>
           </div>
@@ -53,20 +59,32 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `relative px-1 py-2 text-sm font-medium transition-colors duration-300 hover:text-white ${
+                  `relative px-1 py-2 text-sm font-medium transition-colors duration-300 hover:text-white dark:hover:text-white light:hover:text-fcb-dark ${
                     isActive 
-                      ? 'text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-fcb-blue after:via-fcb-red after:to-[#FFED02]' 
-                      : 'text-gray-300'
+                      ? 'text-white dark:text-white light:text-fcb-dark after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-fcb-blue after:via-fcb-red after:to-[#FFED02]' 
+                      : 'text-gray-300 dark:text-gray-300 light:text-gray-600'
                   }`
                 }
               >
                 {link.name}
               </NavLink>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-white/10 dark:bg-white/10 light:bg-fcb-dark/10 text-gray-300 dark:text-gray-300 light:text-gray-600 hover:text-white dark:hover:text-white light:hover:text-fcb-dark transition-colors"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
           </nav>
           
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-3">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-white/10 dark:bg-white/10 light:bg-fcb-dark/10 text-gray-300 dark:text-gray-300 light:text-gray-600 hover:text-white dark:hover:text-white light:hover:text-fcb-dark transition-colors"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white focus:outline-none"
@@ -84,29 +102,27 @@ const Navbar = () => {
       </div>
       
       {/* Mobile menu, show/hide based on menu state */}
-      <div
-        className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
-          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      >
-        <div className="fixed inset-0 bg-fcb-dark/95 backdrop-blur-md">
-          <div className="pt-20 pb-4 px-4 space-y-1">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) => 
-                  `block py-4 text-center text-lg font-medium border-b border-white/10 ${
-                    isActive ? 'text-[#FFED02]' : 'text-gray-300'
-                  }`
-                }
-              >
-                {link.name}
-              </NavLink>
-            ))}
+      {isOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-fcb-dark dark:bg-fcb-dark light:bg-white">
+          <div className="fixed inset-0 bg-black/95 dark:bg-black/95 light:bg-white/95">
+            <div className="pt-20 pb-4 px-4 space-y-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) => 
+                    `block py-4 text-center text-lg font-medium border-b border-white/10 dark:border-white/10 light:border-gray-200 ${
+                      isActive ? 'text-[#FFED02] dark:text-[#FFED02] light:text-fcb-blue' : 'text-gray-300 dark:text-gray-300 light:text-gray-800'
+                    }`
+                  }
+                >
+                  {link.name}
+                </NavLink>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };

@@ -7,6 +7,41 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --primary: 210 100% 29.8%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 340 70% 28.4%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --tertiary: 52 100% 50%;
+    --tertiary-foreground: 240 10% 3.9%;
+    
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    
+    --radius: 0.75rem;
+  }
+
+  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     
@@ -16,13 +51,13 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 210 100% 29.8%; /* FCB Blue */
+    --primary: 210 100% 29.8%;
     --primary-foreground: 0 0% 98%;
     
-    --secondary: 340 70% 28.4%; /* FCB Red */
+    --secondary: 340 70% 28.4%;
     --secondary-foreground: 0 0% 98%;
     
-    --tertiary: 52 100% 50%; /* FCB Yellow */
+    --tertiary: 52 100% 50%;
     --tertiary-foreground: 240 10% 3.9%;
     
     --muted: 240 3.7% 15.9%;
@@ -37,18 +72,20 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
-    
-    --radius: 0.75rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-border selection:bg-fcb-blue/30 selection:text-white;
+    @apply border-border selection:bg-fcb-blue/30 selection:text-white dark:selection:bg-fcb-blue/30 dark:selection:text-white;
+  }
+  
+  .light * {
+    @apply selection:bg-fcb-blue/30 selection:text-fcb-dark;
   }
   
   body {
-    @apply bg-fcb-dark text-foreground antialiased;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
@@ -68,15 +105,27 @@
   }
 
   .glass-card {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+    @apply backdrop-blur-xl bg-white/5 dark:bg-white/5 border border-white/10 dark:border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+  }
+  
+  .light .glass-card {
+    @apply bg-white/80 border-gray-200 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.1)];
   }
   
   .neo-blur {
-    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+    @apply backdrop-blur-2xl bg-black/40 dark:bg-black/40 border border-white/10 dark:border-white/10;
+  }
+  
+  .light .neo-blur {
+    @apply bg-white/40 border-gray-200;
   }
   
   .text-gradient {
-    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-white via-white/90 to-white/70 dark:bg-gradient-to-br dark:from-white dark:via-white/90 dark:to-white/70 bg-clip-text text-transparent;
+  }
+  
+  .light .text-gradient {
+    @apply bg-gradient-to-br from-fcb-dark via-fcb-dark/90 to-fcb-dark/70;
   }
   
   .fcb-text-gradient {
@@ -96,7 +145,11 @@
   }
   
   .fcb-highlight {
-    @apply text-[#FFED02];
+    @apply text-[#FFED02] dark:text-[#FFED02];
+  }
+  
+  .light .fcb-highlight {
+    @apply text-fcb-blue;
   }
   
   .fcb-gradient-accent {

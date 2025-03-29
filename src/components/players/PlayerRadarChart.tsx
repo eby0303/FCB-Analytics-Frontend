@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { 
   Radar, 
@@ -11,6 +10,14 @@ import {
 } from 'recharts';
 import { PlayerStats } from '../../utils/api';
 import { Plus, X } from 'lucide-react';
+import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
 
 interface PlayerRadarChartProps {
   data: PlayerStats[];
@@ -22,25 +29,40 @@ interface RadarData {
   [key: string]: string | number;
 }
 
+interface PlayerPercentileData {
+  player: string;
+  team?: string;
+  age?: string;
+  metrics: {
+    [key: string]: number;
+  };
+}
+
 const PlayerRadarChart = ({ 
   data, 
   filterPosition
 }: PlayerRadarChartProps) => {
-  // Metrics to show on the radar chart
+  // Metrics to show on the radar chart and table
   const metrics = [
-    { key: 'PrgP', name: 'Passes to box' },
-    { key: 'xAG', name: 'xA' },
-    { key: 'PrgC', name: 'Att Actions' },
-    { key: 'PrgR', name: 'Passes Rec' },
-    { key: 'xG', name: 'xG' },
-    { key: 'npxG', name: 'NPG' }
+    { key: 'Age', name: 'Age', displayInTable: true, displayInRadar: false },
+    { key: 'Duels', name: 'Duel%', displayInTable: true, displayInRadar: true },
+    { key: 'DefAct', name: 'Def actions', displayInTable: true, displayInRadar: true },
+    { key: 'PrgC', name: 'Prog. carries', displayInTable: true, displayInRadar: true },
+    { key: 'FwdP', name: 'Forward passes', displayInTable: true, displayInRadar: true },
+    { key: 'PassPct', name: 'Forward pass%', displayInTable: true, displayInRadar: true },
+    { key: 'KP', name: 'Key passes', displayInTable: true, displayInRadar: true },
+    { key: 'PrgP', name: 'Prog. passes', displayInTable: true, displayInRadar: true },
+    { key: 'Min', name: 'Minutes played', displayInTable: true, displayInRadar: false }
   ];
+  
+  const radarMetrics = metrics.filter(m => m.displayInRadar);
   
   const [chartData, setChartData] = useState<RadarData[]>([]);
   const [availablePlayers, setAvailablePlayers] = useState<PlayerStats[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerStats[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [percentileData, setPercentileData] = useState<Record<string, Record<string, number>>>({});
+  const [playerPercentiles, setPlayerPercentiles] = useState<PlayerPercentileData[]>([]);
   
   // Calculate percentiles for all players once when data changes
   useEffect(() => {
@@ -96,6 +118,36 @@ const PlayerRadarChart = ({
     setSelectedPlayers([]);
   }, [data, filterPosition]);
   
+  // Update player percentiles data for the table
+  useEffect(() => {
+    if (selectedPlayers.length === 0 || Object.keys(percentileData).length === 0) {
+      setPlayerPercentiles([]);
+      return;
+    }
+    
+    const newPlayerPercentiles = selectedPlayers.map(player => {
+      const playerData: PlayerPercentileData = {
+        player: player.Player,
+        team: player.team || "Barcelona",
+        age: player.Age,
+        metrics: {}
+      };
+      
+      // Add each metric's percentile
+      metrics.forEach(metric => {
+        if (percentileData[player.Player] && percentileData[player.Player][metric.key] !== undefined) {
+          playerData.metrics[metric.key] = percentileData[player.Player][metric.key];
+        } else {
+          playerData.metrics[metric.key] = 0;
+        }
+      });
+      
+      return playerData;
+    });
+    
+    setPlayerPercentiles(newPlayerPercentiles);
+  }, [selectedPlayers, percentileData]);
+  
   // Update chart data when selected players change
   useEffect(() => {
     if (selectedPlayers.length === 0 || Object.keys(percentileData).length === 0) {
@@ -104,7 +156,7 @@ const PlayerRadarChart = ({
     }
     
     // Generate radar chart data points
-    const radarData = metrics.map(metric => {
+    const radarData = radarMetrics.map(metric => {
       const dataPoint: RadarData = { subject: metric.name };
       
       selectedPlayers.forEach(player => {
@@ -153,7 +205,7 @@ const PlayerRadarChart = ({
           <input
             type="text"
             placeholder="Enter player name..."
-            className="w-full px-4 py-2 bg-fcb-dark/60 border border-white/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-fcb-blue"
+            className="w-full px-4 py-2 bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-white/80 border border-white/10 dark:border-white/10 light:border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-fcb-blue"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -215,36 +267,83 @@ const PlayerRadarChart = ({
       {/* Position filter buttons */}
       <div className="flex items-center flex-wrap justify-center space-x-2 mb-4">
         <button
-          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'GK' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60'}`}
+          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'GK' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-gray-200'}`}
           onClick={() => {}}
         >
           GK
         </button>
         <button
-          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'DF' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60'}`}
+          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'DF' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-gray-200'}`}
           onClick={() => {}}
         >
           DF
         </button>
         <button
-          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'MF' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60'}`}
+          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'MF' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-gray-200'}`}
           onClick={() => {}}
         >
           MF
         </button>
         <button
-          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'FW' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60'}`}
+          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'FW' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-gray-200'}`}
           onClick={() => {}}
         >
           FW
         </button>
         <button
-          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'all' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60'}`}
+          className={`px-4 py-1 text-sm rounded-lg ${filterPosition === 'all' ? 'bg-fcb-blue text-white' : 'bg-fcb-dark/60 dark:bg-fcb-dark/60 light:bg-gray-200'}`}
           onClick={() => {}}
         >
           All
         </button>
       </div>
+      
+      {/* Percentile table */}
+      {playerPercentiles.length > 0 && (
+        <div className="overflow-x-auto mb-6">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-32 text-left">Percentiles</TableHead>
+                <TableHead className="text-center">Team</TableHead>
+                {metrics.map(metric => (
+                  <TableHead key={metric.key} className="text-center whitespace-nowrap">
+                    {metric.name}
+                  </TableHead>
+                ))}
+                <TableHead className="w-10"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {playerPercentiles.map((player, idx) => (
+                <TableRow key={player.player} className="hover:bg-white/5">
+                  <TableCell className="font-medium" style={{ color: colors[idx % colors.length] }}>
+                    {player.player}
+                  </TableCell>
+                  <TableCell className="text-center">{player.team}</TableCell>
+                  {metrics.map(metric => (
+                    <TableCell 
+                      key={`${player.player}-${metric.key}`} 
+                      className="text-center font-mono"
+                      style={{ color: colors[idx % colors.length] }}
+                    >
+                      {player.metrics[metric.key] ? player.metrics[metric.key].toFixed(1) : '-'}
+                    </TableCell>
+                  ))}
+                  <TableCell>
+                    <button 
+                      onClick={() => removePlayer(player.player)}
+                      className="p-1 hover:bg-white/10 rounded"
+                    >
+                      <X size={16} />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
       
       {/* Radar chart visualization */}
       {selectedPlayers.length > 0 ? (
