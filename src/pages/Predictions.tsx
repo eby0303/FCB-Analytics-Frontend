@@ -78,7 +78,7 @@ const Predictions = () => {
   ];
 
   return (
-    <div className="page-container bg-fcb-dark text-white">
+    <div className="page-container bg-[#1A1F2C] text-white">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-display font-bold text-center mb-2">
           <span className="text-fcb-blue">Match </span>
