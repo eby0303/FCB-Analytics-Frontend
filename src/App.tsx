@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Players from "./pages/Players";
 import About from "./pages/About";
+import Predictions from "./pages/Predictions";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./hooks/useTheme";
 
@@ -28,13 +29,14 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col bg-fcb-dark dark:bg-fcb-dark">
+          <div className="min-h-screen flex flex-col bg-[#1A1F2C] dark:bg-[#1A1F2C]">
             <Navbar />
             <main className="flex-1 fcb-scrollbar">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/players" element={<Players />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/predictions" element={<Predictions />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

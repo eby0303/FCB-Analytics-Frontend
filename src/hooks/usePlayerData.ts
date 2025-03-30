@@ -1,6 +1,10 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, API_ENDPOINTS, Player, TeamStats } from '../utils/api';
+
+export interface PlayerStats {
+  name: string;
+  position: string;
+}
 
 export function useAllPlayers() {
   return useQuery({
