@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Players from "./pages/Players";
 import About from "./pages/About";
+import Predictions from "./pages/Predictions";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./hooks/useTheme";
 
@@ -35,6 +36,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/players" element={<Players />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/predictions" element={<Predictions />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

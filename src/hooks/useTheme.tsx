@@ -1,37 +1,20 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type Theme = 'dark';
+import { createContext, useContext, useEffect, ReactNode } from 'react';
 
 interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  theme: 'dark';
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
-
   useEffect(() => {
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
+    // Always use dark theme
+    document.documentElement.classList.add('dark');
   }, []);
 
-  useEffect(() => {
-    // Save theme preference
-    localStorage.setItem('theme', theme);
-    
-    // Apply theme to document
-    document.documentElement.classList.add('dark');
-  }, [theme]);
-
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: 'dark' }}>
       {children}
     </ThemeContext.Provider>
   );
