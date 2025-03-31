@@ -27,7 +27,7 @@ const SeasonSummary = () => {
           value={stats?.draws || 0}
           icon={<Swords className="w-5 h-5" />}
           isLoading={isLoading}
-          valueClassName="text-yellow-400"
+          valueClassName="text-fcb-yellow"
         />
         
         <StatsCard
@@ -35,7 +35,7 @@ const SeasonSummary = () => {
           value={stats?.losses || 0}
           icon={<X className="w-5 h-5" />}
           isLoading={isLoading}
-          valueClassName="text-red-400"
+          valueClassName="text-fcb-red"
         />
         
         <StatsCard
@@ -43,7 +43,7 @@ const SeasonSummary = () => {
           value={stats?.goalsFor || 0}
           icon={<Target className="w-5 h-5" />}
           isLoading={isLoading}
-          valueClassName="text-blue-400"
+          valueClassName="text-fcb-blue"
         />
         
         <StatsCard

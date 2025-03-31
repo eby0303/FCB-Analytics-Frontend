@@ -78,7 +78,7 @@ const Predictions = () => {
   ];
 
   return (
-    <div className="page-container bg-[#1A1F2C] text-white">
+    <div className="page-container bg-fcb-dark text-white">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-display font-bold text-center mb-2">
           <span className="text-fcb-blue">Match </span>
@@ -91,9 +91,9 @@ const Predictions = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Match Selection */}
-          <Card className="bg-[#1a1f2c] border-none shadow-lg p-5">
+          <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
-              <Clock className="text-yellow-400" />
+              <Clock className="text-fcb-yellow" />
               <h2>Select Upcoming Match</h2>
             </div>
             {upcomingMatches && upcomingMatches.length > 0 ? (
@@ -113,9 +113,9 @@ const Predictions = () => {
           </Card>
 
           {/* Key Influencing Factors */}
-          <Card className="bg-[#1a1f2c] border-none shadow-lg p-5">
+          <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
-              <BarChart3 className="text-yellow-400" />
+              <BarChart3 className="text-fcb-yellow" />
               <h2>Key Influencing Factors</h2>
             </div>
             <div className="space-y-3">
@@ -131,9 +131,9 @@ const Predictions = () => {
           </Card>
 
           {/* Scenario Analysis */}
-          <Card className="bg-[#1a1f2c] border-none shadow-lg p-5">
+          <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
-              <UserRound className="text-yellow-400" />
+              <UserRound className="text-fcb-yellow" />
               <h2>Scenario Analysis</h2>
             </div>
             <div className="space-y-3">
@@ -151,9 +151,9 @@ const Predictions = () => {
         </div>
 
         {/* Prediction Models */}
-        <Card className="bg-[#1a1f2c] border-none shadow-lg p-5 mt-6">
+        <Card className="bg-fcb-dark border-none shadow-lg p-5 mt-6">
           <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
-            <BarChart3 className="text-yellow-400" />
+            <BarChart3 className="text-fcb-yellow" />
             <h2>Prediction Model</h2>
           </div>
           
@@ -163,7 +163,7 @@ const Predictions = () => {
                 key={model.id}
                 className={`p-4 rounded-lg cursor-pointer transition-all ${
                   model.isSelected 
-                    ? 'bg-[#0e4d98] border border-blue-400' 
+                    ? 'bg-fcb-blue border border-blue-400' 
                     : 'glass-card hover:border-gray-400'
                 }`}
                 onClick={() => setSelectedModelIndex(index)}
@@ -185,7 +185,7 @@ const Predictions = () => {
           </div>
           
           <Button 
-            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full mt-4 bg-fcb-blue hover:bg-blue-700 text-white"
           >
             Calculate Prediction
           </Button>
