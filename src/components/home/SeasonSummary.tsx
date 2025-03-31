@@ -11,7 +11,7 @@ const SeasonSummary = () => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="section-title mb-6">Season Summary</h2>
+      <h2 className="section-title mb-6">Laliga Summary</h2>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <StatsCard
