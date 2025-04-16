@@ -5,15 +5,44 @@ import {
   Clock,
   CheckCircle,
   UserRound, 
-  ChevronDown
+  ChevronDown,
+  LineChart
 } from "lucide-react";
 import { useUpcomingMatches } from "@/hooks/useMatchData";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+
+// Define the type for prediction response
+interface PredictionResponse {
+  prediction: number[][];
+}
+
+// Column names for the prediction results
+const TARGET_COLUMNS = [
+  "For_GF", "For_GA", "For_Result", "Expected_xG", "Expected_npxG", 
+  "Standard_Gls", "Standard_Sh", "Standard_SoT", "Standard_G/Sh", "Standard_G/SoT",
+  "Performance_CS", "Performance_PSxG", "Performance_Save%", "Performance_Saves",
+  "Tackles_Tkl", "Tackles_TklW", "Challenges_Tkl", "Challenges_Tkl%", 
+  "Unnamed_24_Clr", "Unnamed_23_Tkl+Int", "Unnamed_25_Err",
+  "Unnamed_31_PrgP", "Total_PrgDist", "Total_TotDist", "Carries_PrgDist",
+  "Carries_Carries", "Touches_Touches", "Passes_Thr",
+  "Total_Cmp%", "Short_Cmp%", "Medium_Cmp%", "Long_Cmp%", "Passes_Launch%",
+  "For_Poss"
+];
+
+// Fixed features for prediction
+const FEATURES = [
+  12, 3, 5, 7, 1, 0, 8, 2, 25, 1.8, 47, 4, 1.2, 30, 15, 300, 0, 1, 22.3, 3,
+  1, 2, 17, 20,
+  "Mon", "8/15/2022", "Home", "2022-08-15 12:00:00", "12:00", "Round 2"
+];
 
 const Predictions = () => {
   const { data: upcomingMatches } = useUpcomingMatches();
   const [selectedModelIndex, setSelectedModelIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [predictionResults, setPredictionResults] = useState<number[] | null>(null);
 
   const predictionModels = [
     {
@@ -76,6 +105,39 @@ const Predictions = () => {
       winPercentage: '41%' 
     },
   ];
+
+  const calculatePrediction = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          features: FEATURES
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data: PredictionResponse = await response.json();
+      setPredictionResults(data.prediction[0]);
+      toast.success("Prediction calculated successfully!");
+    } catch (error) {
+      console.error('Error calculating prediction:', error);
+      toast.error("Failed to calculate prediction. Please ensure your API is running.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Format prediction values for display
+  const formatPredictionValue = (value: number): string => {
+    return value.toFixed(2);
+  };
 
   return (
     <div className="page-container bg-fcb-dark text-white">
@@ -186,10 +248,34 @@ const Predictions = () => {
           
           <Button 
             className="w-full mt-4 bg-fcb-blue hover:bg-blue-700 text-white"
+            onClick={calculatePrediction}
+            disabled={isLoading}
           >
-            Calculate Prediction
+            {isLoading ? "Calculating..." : "Calculate Prediction"}
           </Button>
         </Card>
+
+        {/* Prediction Results */}
+        {predictionResults && (
+          <Card className="bg-fcb-dark border-none shadow-lg p-5 mt-6 animate-fade-in">
+            <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
+              <LineChart className="text-fcb-yellow" />
+              <h2>Prediction Results</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {TARGET_COLUMNS.map((column, index) => (
+                <div 
+                  key={column} 
+                  className="glass-card p-3 hover:border-fcb-blue transition-colors"
+                >
+                  <p className="text-xs text-gray-400 mb-1">{column}</p>
+                  <p className="text-lg font-semibold">{formatPredictionValue(predictionResults[index])}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   );
