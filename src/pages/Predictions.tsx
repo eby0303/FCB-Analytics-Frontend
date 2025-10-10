@@ -1,11 +1,9 @@
-
 import { Card } from "@/components/ui/card";
 import { 
   BarChart3,
   Clock,
   CheckCircle,
   UserRound, 
-  ChevronDown,
   LineChart
 } from "lucide-react";
 import { useUpcomingMatches } from "@/hooks/useMatchData";
@@ -15,7 +13,7 @@ import { toast } from "sonner";
 
 // Define the type for prediction response
 interface PredictionResponse {
-  prediction: number[][];
+  prediction: number[];
 }
 
 // Column names for the prediction results
@@ -29,13 +27,6 @@ const TARGET_COLUMNS = [
   "Carries_Carries", "Touches_Touches", "Passes_Thr",
   "Total_Cmp%", "Short_Cmp%", "Medium_Cmp%", "Long_Cmp%", "Passes_Launch%",
   "For_Poss"
-];
-
-// Fixed features for prediction
-const FEATURES = [
-  12, 3, 5, 7, 1, 0, 8, 2, 25, 1.8, 47, 4, 1.2, 30, 15, 300, 0, 1, 22.3, 3,
-  1, 2, 17, 20,
-  "Mon", "8/15/2022", "Home", "2022-08-15 12:00:00", "12:00", "Round 2"
 ];
 
 const Predictions = () => {
@@ -106,53 +97,62 @@ const Predictions = () => {
     },
   ];
 
+  // ✅ Safe prediction fetch with full error handling
   const calculatePrediction = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/predict', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          features: FEATURES
-        }),
+      const response = await fetch("http://127.0.0.1:8000/predict/latest", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const text = await response.text();
+        throw new Error(`API Error (${response.status}): ${text}`);
       }
 
       const data: PredictionResponse = await response.json();
-      setPredictionResults(data.prediction[0]);
-      toast.success("Prediction calculated successfully!");
-    } catch (error) {
-      console.error('Error calculating prediction:', error);
-      toast.error("Failed to calculate prediction. Please ensure your API is running.");
+      console.log("✅ Received prediction data:", data);
+
+      if (!data.prediction || !Array.isArray(data.prediction)) {
+        throw new Error("Invalid API response format. Expected { prediction: number[] }");
+      }
+
+      // Safely pad or trim the prediction array
+      const fixedResults = TARGET_COLUMNS.map((_, i) => data.prediction[i] ?? 0);
+      setPredictionResults(fixedResults);
+
+      toast.success("Prediction retrieved successfully!");
+    } catch (error: any) {
+      console.error("❌ Error fetching prediction:", error);
+      toast.error(error.message || "Failed to retrieve prediction. Ensure API is running.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Format prediction values for display
+  // ✅ Safe formatter to prevent crashes
   const formatPredictionValue = (value: number): string => {
+    if (isNaN(value)) return "N/A";
     return value.toFixed(2);
   };
 
   return (
-    <div className="page-container bg-fcb-dark text-white">
+    <div className="page-container bg-fcb-dark text-white min-h-screen py-10">
       <div className="max-w-5xl mx-auto">
+        {/* Header */}
         <h1 className="text-4xl md:text-5xl font-display font-bold text-center mb-2">
           <span className="text-fcb-blue">Match </span>
           <span className="text-fcb-red">Prediction </span>
           <span className="text-white">System</span>
         </h1>
         <p className="text-gray-300 text-center mb-10">
-          Advanced analytics to predict Barcelona's match outcomes with statistical models
+          Advanced analytics to predict Barcelona's match outcomes using statistical models
         </p>
 
+        {/* Top Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Match Selection */}
+          {/* Upcoming Match */}
           <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
               <Clock className="text-fcb-yellow" />
@@ -168,13 +168,13 @@ const Predictions = () => {
                 ))}
               </div>
             ) : (
-              <div className="glass-card p-4 text-center">
-                <p className="text-gray-400">No upcoming matches available</p>
+              <div className="glass-card p-4 text-center text-gray-400">
+                No upcoming matches available
               </div>
             )}
           </Card>
 
-          {/* Key Influencing Factors */}
+          {/* Key Factors */}
           <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
               <BarChart3 className="text-fcb-yellow" />
@@ -192,7 +192,7 @@ const Predictions = () => {
             </div>
           </Card>
 
-          {/* Scenario Analysis */}
+          {/* Scenarios */}
           <Card className="bg-fcb-dark border-none shadow-lg p-5">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
               <UserRound className="text-fcb-yellow" />
@@ -247,16 +247,27 @@ const Predictions = () => {
           </div>
           
           <Button 
+            type="button"
             className="w-full mt-4 bg-fcb-blue hover:bg-blue-700 text-white"
-            onClick={calculatePrediction}
+            onClick={(e) => {
+              e.preventDefault();
+              calculatePrediction();
+            }}
             disabled={isLoading}
           >
-            {isLoading ? "Calculating..." : "Calculate Prediction"}
+            {isLoading ? "Fetching Latest Prediction..." : "Get Latest Prediction"}
           </Button>
         </Card>
 
-        {/* Prediction Results */}
+        {/* Debug (optional) */}
         {predictionResults && (
+          <pre className="text-xs bg-gray-900 text-gray-300 p-2 rounded-lg mt-4 overflow-auto">
+            {JSON.stringify(predictionResults, null, 2)}
+          </pre>
+        )}
+
+        {/* Prediction Results */}
+        {predictionResults && Array.isArray(predictionResults) && predictionResults.length > 0 && (
           <Card className="bg-fcb-dark border-none shadow-lg p-5 mt-6 animate-fade-in">
             <div className="flex items-center gap-2 mb-4 text-xl font-semibold">
               <LineChart className="text-fcb-yellow" />
@@ -270,7 +281,11 @@ const Predictions = () => {
                   className="glass-card p-3 hover:border-fcb-blue transition-colors"
                 >
                   <p className="text-xs text-gray-400 mb-1">{column}</p>
-                  <p className="text-lg font-semibold">{formatPredictionValue(predictionResults[index])}</p>
+                  <p className="text-lg font-semibold">
+                    {predictionResults[index] !== undefined
+                      ? formatPredictionValue(predictionResults[index])
+                      : "N/A"}
+                  </p>
                 </div>
               ))}
             </div>
