@@ -18,15 +18,13 @@ interface PredictionResponse {
 
 // Column names for the prediction results
 const TARGET_COLUMNS = [
-  "For_GF", "For_GA", "For_Result", "Expected_xG", "Expected_npxG", 
+  "For_GF", "For_GA", "For_Result", "Expected_xG", "Expected_npxG",
   "Standard_Gls", "Standard_Sh", "Standard_SoT", "Standard_G/Sh", "Standard_G/SoT",
-  "Performance_CS", "Performance_PSxG", "Performance_Save%", "Performance_Saves",
-  "Tackles_Tkl", "Tackles_TklW", "Challenges_Tkl", "Challenges_Tkl%", 
-  "Unnamed_24_Clr", "Unnamed_23_Tkl+Int", "Unnamed_25_Err",
-  "Unnamed_31_PrgP", "Total_PrgDist", "Total_TotDist", "Carries_PrgDist",
-  "Carries_Carries", "Touches_Touches", "Passes_Thr",
-  "Total_Cmp%", "Short_Cmp%", "Medium_Cmp%", "Long_Cmp%", "Passes_Launch%",
-  "For_Poss"
+  "Performance_PSxG",
+  "Tackles_Tkl", "Tackles_TklW", "Challenges_Tkl", "Challenges_Tkl%",
+  "Total_PrgDist", "Total_TotDist", "Carries_PrgDist",
+  "Carries_Carries", "Touches_Touches",
+  "Total_Cmp%"
 ];
 
 const Predictions = () => {
@@ -65,6 +63,14 @@ const Predictions = () => {
       isSelected: selectedModelIndex === 3,
     }
   ];
+// Convert For_Result numeric value → W / D / L
+const classifyMatchOutcome = (value: number): "W" | "D" | "L" => {
+  if (isNaN(value)) return "D";
+
+  if (value > 0.25) return "W";   
+  if (value < -0.25) return "L";  
+  return "D"; 
+};
 
   const keyFactors = [
     { name: 'Home Advantage', value: '+8.5', positive: true },
@@ -122,6 +128,9 @@ const Predictions = () => {
       const fixedResults = TARGET_COLUMNS.map((_, i) => data.prediction[i] ?? 0);
       setPredictionResults(fixedResults);
 
+      const resultValue = fixedResults[2]; // For_Result index = 2
+      console.log("Match Outcome:", classifyMatchOutcome(resultValue));
+
       toast.success("Prediction retrieved successfully!");
     } catch (error: any) {
       console.error("❌ Error fetching prediction:", error);
@@ -131,7 +140,7 @@ const Predictions = () => {
     }
   };
 
-  // ✅ Safe formatter to prevent crashes
+  //  Safe formatter to prevent crashes
   const formatPredictionValue = (value: number): string => {
     if (isNaN(value)) return "N/A";
     return value.toFixed(2);
@@ -259,12 +268,12 @@ const Predictions = () => {
           </Button>
         </Card>
 
-        {/* Debug (optional) */}
+        {/* Debug (optional)
         {predictionResults && (
           <pre className="text-xs bg-gray-900 text-gray-300 p-2 rounded-lg mt-4 overflow-auto">
             {JSON.stringify(predictionResults, null, 2)}
           </pre>
-        )}
+        )} */}
 
         {/* Prediction Results */}
         {predictionResults && Array.isArray(predictionResults) && predictionResults.length > 0 && (
@@ -273,7 +282,17 @@ const Predictions = () => {
               <LineChart className="text-fcb-yellow" />
               <h2>Prediction Results</h2>
             </div>
-            
+
+            {/* Match Outcome (W/D/L) */}
+            <div className="glass-card p-4 mb-6 border border-fcb-blue text-center">
+              <h3 className="text-xl font-bold mb-2">Match Outcome Prediction</h3>
+              <p className="text-5xl font-extrabold text-fcb-yellow">
+                {classifyMatchOutcome(predictionResults[2])}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">(Based on For_Result)</p>
+            </div>
+
+            {/* Detailed Prediction Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {TARGET_COLUMNS.map((column, index) => (
                 <div 
